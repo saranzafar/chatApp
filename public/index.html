@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatApp</title>
+
+    <style>
+        #received-message {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>This is chat app</h1>
+    <input type="text" id="message" placeholder="Type message">
+    <button id="btn">Send</button>
+
+    <div id="received-message"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io()
+        const message = document.getElementById("message")
+        const btn = document.getElementById("btn")
+        const receivedMessage = document.getElementById("received-message")
+
+        //sending message
+        document.addEventListener("click", (e) => {
+            const inputmsg = message.value
+            socket.emit("user-message", inputmsg)
+        })
+
+        //receiving message
+        socket.on("user-message", (message) => {
+            console.log("Message received from server side: ", message);
+            const p = document.createElement("p")
+            p.innerHTML = message
+            receivedMessage.appendChild(p)
+        })
+    </script>
+</body>
+
+</html>
