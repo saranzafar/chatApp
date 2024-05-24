@@ -10,7 +10,7 @@ function Footer() {
                 >
                     <div className="flex flex-wrap justify-center gap-4 text-xs lg:justify-end">
                         <div className="text-gray-500 transition ">
-                            @CopyRignt 2024 | All Rights Reserved
+                            @CopyRight 2024 | All Rights Reserved
                             <Link
                                 to='#'
                                 className='text-secondary-700 hover:opacity-75 hover:underline pl-1'

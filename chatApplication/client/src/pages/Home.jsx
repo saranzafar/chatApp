@@ -17,8 +17,9 @@ function Home() {
                 <p className='w-2/3 min-w-72 text-center text-secondary-500'>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. In ducimus blanditiis veniam optio porro laboriosam consequatur quae id libero dolore architecto hic nulla repellat, earum repellendus, nostrum aut, qui aliquid!
                 </p>
-                <Button value={"Community Chat"} />
-                <Button value={"Personal Chat"} />
+                <Button value={"Community Chat"} to='community' />
+                <Button value={"Personal Chat"} to='creating-room' />
+
 
                 <h2 className='font-bold text-2xl text-secondary-700 mt-10'>Docs</h2>
                 <p className='w-1/2 min-w-72 text-center text-secondary-500'>
@@ -31,7 +32,7 @@ function Home() {
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. In ducimus blanditiis veniam optio porro laboriosam consequatur quae id libero dolore architecto hic nulla repellat, earum repellendus, nostrum aut, qui aliquid!
                 </p>
             </div >
-            <Footer/>
+            <Footer />
         </div>
 
     );
