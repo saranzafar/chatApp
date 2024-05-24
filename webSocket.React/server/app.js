@@ -24,7 +24,6 @@ app.use(cors({
     credentials: true
 }))
 
-
 app.get("/", (req, res) => {
     res.send("hellow world");
 })

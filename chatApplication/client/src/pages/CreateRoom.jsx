@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from "../components/index";
 import { Footer } from "./index"
+import { io } from 'socket.io-client';
+import { URL } from '../config';
+
 
 function CreateRoom() {
+    const socket = io(URL, { withCredentials: true })
+    const [roomName, setRoomName] = useState("")
 
-    const handelSubmit = (e) => {
+    useEffect(() => { }, [])
+
+    const handelCreateRoomSubmit = (e) => {
         e.preventDefault();
+        socket.emit("creating-room", roomName)
+
     }
 
     return (
@@ -21,42 +30,19 @@ function CreateRoom() {
                 </div>
                 <p className='text-secondary-500'>Enter Room name to create a room, it is recomanded that room name should be short and easy.</p>
                 <form
-                    onSubmit={handelSubmit}
+                    onSubmit={handelCreateRoomSubmit}
                     className='flex justify-center flex-col items-center gap-5 w-full mt-5'
                 >
                     <input
                         type="text"
                         placeholder='Enter Room Name'
+                        onChange={(e) => setRoomName(e.target.value)}
+                        value={roomName}
                         className='border border-primary-700 p-2 rounded-lg w-1/3  min-w-64 text-secondary-500'
                     />
                     <Button value={"Create Room"} />
                 </form>
             </section >
-
-            <section className='w-full h-auto bg-primary-50 text-white flex justify-center flex-col items-center gap-5 mt-24'>
-                <div className='flex items-center space-x-2 '>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="black" className="size-9">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
-                    </svg>
-
-                    <h1 className='font-bold text-2xl text-secondary-700'>
-                        Join Room
-                    </h1>
-                </div>
-                <p className='text-secondary-500'>Enter Room name to Join a room</p>
-                <form
-                    onSubmit={handelSubmit}
-                    className='flex justify-center flex-col items-center gap-5 w-full mt-5'
-                >
-                    <input
-                        type="text"
-                        placeholder='Enter Room Name'
-                        className='border border-primary-700 p-2 rounded-lg w-1/3  min-w-64 text-secondary-500'
-                    />
-                    <Button value={"Join Room"} />
-                </form>
-            </section >
-            <Footer />
         </div>
 
     );
