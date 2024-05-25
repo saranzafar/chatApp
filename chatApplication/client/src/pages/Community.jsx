@@ -63,7 +63,7 @@ function Community() {
     };
 
     return (
-        <div className="flex-1 overflow-y-auto text-secondary-700">
+        <div className="bubble-pattren flex-1 overflow-y-auto text-secondary-700">
             {!isNameSet ? (
                 <div className="flex flex-col items-center justify-center h-full mt-20">
                     <input
@@ -82,16 +82,16 @@ function Community() {
                 </div>
             ) : (
                 <div className="flex flex-col h-screen p-6 overflow-x-hidden">
-                    <small className='w-full text-center text-secondary-300 mb-4'>
+                    <small className='w-full text-center text-yellow-400 mb-4'>
                         End-to-end encryption ensures your messages are secure
                     </small>
-                    <small className='w-full text-center text-secondary-400 mb-4'>
+                    <small className='w-full text-center text-secondary-500 mb-4 work-sans-notification'>
                         Be Polite in Community Chat
                     </small>
                     <div className="space-y-4 mb-20">
                         {messages.map((msg, index) => (
                             <div key={index} className={`flex ${msg.name === name ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`${msg.name === name ? 'bg-blue-500 text-white' : 'bg-gray-200'} p-3 rounded-md max-w-sm`}>
+                                <div className={`shadow-lg ${msg.name === name ? 'bg-blue-500 text-white' : 'bg-gray-200'} p-3 rounded-md max-w-sm`}>
                                     {msg.system ? msg.text : `${msg.name}: ${msg.text}`}
                                 </div>
                             </div>
@@ -99,7 +99,7 @@ function Community() {
                         <div ref={messagesEndRef} />
                     </div>
                     <div className="absolute bottom-0 left-0 w-full py-4 bg-white border-t border-gray-300 flex justify-center">
-                        <form className="flex space-x-2 w-2/4 min-w-64" onSubmit={handleSendMessage}>
+                        <form className="flex space-x-2 w-2/4 min-w-64 " onSubmit={handleSendMessage}>
                             <input
                                 className="flex-1 h-10 rounded-md border border-secondary-500 bg-transparent px-3 py-2 text-sm placeholder-secondary-600 focus:outline-none focus:ring-1 focus:ring-secondary-300 focus:ring-offset-1"
                                 type="text"

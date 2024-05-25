@@ -16,7 +16,8 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
 
-    //community
+    //community specific handling
+    //
     let userName = null;
     socket.on("userJoined", (name) => {
         userName = name;
@@ -29,24 +30,35 @@ io.on("connection", (socket) => {
         io.emit("leave", userName)
     });
 
-    //room
-    let roomUserName = null;
-
+    // Room-specific handling
+    let roomName = ""
+    let roomUser = ""
     socket.on("join-room", (room) => {
-        socket.join(room)
-    })
-
-    socket.on("userJoinedRoom", (name) => {
-        console.log(name, " Joined");
-        roomUserName = name;
-        io.emit("userJoined", name);
+        roomName = room
+        socket.join(room);
     });
 
-    socket.on("roomMessage", ({ message, roomName }) => {
-        console.log(message, roomName);
-        socket.to(roomName).emit("receivedRoomMessage", message)
-    })
+    socket.on("userJoinedRoom", ({ name, roomName }) => {
+        roomUser = name
+        socket.to(roomName).emit("userJoinedRoom", name);
+    });
 
+    socket.on("roomMessage", ({ name, roomName, text }) => {
+        const message = { name, text };
+        socket.to(roomName).emit("receivedRoomMessage", message);
+    });
+
+    socket.on("userLeftRoom", ({ name, roomName }) => {
+        socket.to(roomName).emit("leave", name);
+    });
+
+    socket.on("disconnecting", () => {
+        // const rooms = Object.keys(socket.rooms).filter(room => room !== socket.id);
+        // rooms.forEach((room) => {
+        //     socket.to(room).emit("leave", socket.id);
+        // });
+            socket.to(roomName).emit("roomUserLeft", roomUser);
+    });
 });
 
 app.get("/", (req, res) => {

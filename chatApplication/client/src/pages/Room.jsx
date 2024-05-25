@@ -3,14 +3,13 @@ import { io } from "socket.io-client";
 import { URL } from '../config';
 
 function Room() {
-    const [roomName, setRoomName] = useState(null)
-    const [roomNameValidate, setRoomNameValidate] = useState(false)
+    const [roomName, setRoomName] = useState("");
+    const [roomNameValidate, setRoomNameValidate] = useState(false);
 
     const [name, setName] = useState("");
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [isNameSet, setIsNameSet] = useState(false);
-    const [socketName, setSocketName] = useState("");
 
     const socketRef = useRef(null);
     const messagesEndRef = useRef(null);
@@ -19,25 +18,23 @@ function Room() {
         const socket = io(URL, { withCredentials: true });
         socketRef.current = socket;
 
-        socket.on("connect", () => {
-            console.log("Connected: ", socket.id);
+        socket.on("connect");
+
+        socket.on("receivedRoomMessage", (msg) => {
+            setMessages((prevMessages) => [...prevMessages, msg]);
         });
 
-        socket.on("receivedRoomMessage", (message) => {
-            setMessages((prevMessages) => [...prevMessages, message]);
-        });
-
-        socket.on("userJoined", (userName) => {
+        socket.on("userJoinedRoom", (userName) => {
             setMessages((prevMessages) => [...prevMessages, { system: true, text: `${userName} has joined the chat` }]);
         });
 
-        socket.on("leave", (userName) => {
-            setMessages((prevMessages) => [...prevMessages, { system: true, text: `${userName}: Left` }]);
+        socket.on("roomUserLeft", (userName) => {
+            setMessages((prevMessages) => [...prevMessages, { system: true, text: `${userName} has left the chat` }]);
         });
 
         return () => {
             if (isNameSet) {
-                socket.emit("userLeft", name);
+                socket.emit("userLeftRoom", { name, roomName });
             }
             socket.disconnect();
         };
@@ -53,32 +50,33 @@ function Room() {
         event.preventDefault();
         if (message.trim() && socketRef.current) {
             socketRef.current.emit("roomMessage", { name, roomName, text: message });
+            setMessages((prevMessages) => [...prevMessages, { name, text: message }]); // Add the message to local state
             setMessage("");
         }
-    }, [message, name]);
+    }, [message, name, roomName]);
 
     const handleNameSubmit = () => {
         if (name.trim()) {
             setIsNameSet(true);
             if (socketRef.current) {
-                socketRef.current.emit("userJoinedRoom", name);
+                socketRef.current.emit("userJoinedRoom", { name, roomName });
             }
         }
     };
 
-    const handelFormSubmission = (e) => {
-        e.preventDefault()
-        setRoomNameValidate(true)
-        socketName.emit("join-room", roomName)
-    }
+    const handleFormSubmission = (e) => {
+        e.preventDefault();
+        setRoomNameValidate(true);
+        socketRef.current.emit("join-room", roomName);
+    };
 
     return (
-        <div>
+        <div className='bubble-pattren'>
             {roomNameValidate ? (
                 <div className="flex-1 overflow-y-auto text-secondary-700">
                     {!isNameSet ? (
                         <div className="flex flex-col items-center justify-center h-full mt-20">
-                            <p className='text-secondary-500 mb-7'>You are just 1 step away from the chatting. Enter your name for further processing</p>
+                            <p className='text-secondary-500 mb-7'>You are just 1 step away from chatting. Enter your name for further processing</p>
                             <input
                                 className="h-10 rounded-md border border-secondary-500 bg-transparent px-3 py-2 text-sm placeholder-secondary-500 focus:outline-none focus:ring-1 focus:ring-secondary-300 focus:ring-offset-1"
                                 type="text"
@@ -95,16 +93,16 @@ function Room() {
                         </div>
                     ) : (
                         <div className="flex flex-col h-screen p-6 overflow-x-hidden">
-                            <small className='w-full text-center text-secondary-300 mb-4'>
+                            <small className='w-full text-center text-secondary-300 mb-4 work-sans-notification'>
                                 End-to-end encryption ensures your messages are secure
                             </small>
-                            <small className='w-full text-center text-secondary-400 mb-4'>
+                            <small className='w-full text-center text-secondary-400 mb-4 work-sans-notification'>
                                 Be Polite in Community Chat
                             </small>
-                            <div className="space-y-4 mb-20">
+                            <div className="space-y-4 mb-20 varela-regular">
                                 {messages.map((msg, index) => (
                                     <div key={index} className={`flex ${msg.name === name ? 'justify-end' : 'justify-start'}`}>
-                                        <div className={`${msg.name === name ? 'bg-blue-500 text-white' : 'bg-gray-200'} p-3 rounded-md max-w-sm`}>
+                                        <div className={`${msg.name === name ? 'bg-blue-500 text-white' : 'bg-gray-200'} p-3 rounded-md max-w-sm shadow-lg`}>
                                             {msg.system ? msg.text : `${msg.name}: ${msg.text}`}
                                         </div>
                                     </div>
@@ -143,29 +141,29 @@ function Room() {
                             Create or Join Room
                         </h1>
                     </div>
-                    <p className='text-secondary-500'>Create or Join room by entering its name , Keep room name unique, short and easy.</p>
+                    <p className='text-secondary-500'>Create or Join room by entering its name, Keep room name unique, short and easy.</p>
                     <form
-                        onSubmit={handelFormSubmission}
+                        onSubmit={handleFormSubmission}
                         className='flex justify-center flex-col items-center gap-5 w-full mt-5'
                     >
                         <input
                             type="text"
-                            placeholder='Enter Room Name '
+                            placeholder='Enter Room Name'
                             onChange={(e) => setRoomName(e.target.value)}
                             value={roomName}
                             required
-                            className='border border-primary-700 p-2 rounded-lg w-1/3  min-w-64 text-secondary-500'
+                            className='border border-primary-700 p-2 rounded-lg w-1/3 min-w-64 text-secondary-500'
                         />
 
                         <button
                             type='submit'
                             className='text-secondary-500 border border-secondary-500 hover:bg-secondary-100 px-8 py-1 rounded-lg'
                         >
-                            Send</button>
+                            Send
+                        </button>
                     </form>
-                </section >
+                </section>
             )}
-
         </div>
     );
 }

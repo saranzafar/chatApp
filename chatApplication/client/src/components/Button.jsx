@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 function Button({ type, value, className, to = "#", loading = false }) {
     return (
-        <div className=''>
+        <div className='work-sans-heading'>
             {!loading &&
                 <Link
                     to={to}

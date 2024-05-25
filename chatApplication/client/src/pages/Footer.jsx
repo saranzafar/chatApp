@@ -10,9 +10,9 @@ function Footer() {
                 >
                     <div className="flex flex-wrap justify-center gap-4 text-xs lg:justify-end">
                         <div className="text-gray-500 transition ">
-                            @CopyRight 2024 | All Rights Reserved
+                            © 2024 Talkie | All rights reserved. Automatically updated.
                             <Link
-                                to='#'
+                                to='https://github.com/saranzafar'
                                 className='text-secondary-700 hover:opacity-75 hover:underline pl-1'
                                 target='_blank'
                             >
@@ -24,23 +24,24 @@ function Footer() {
                     <ul className="mt-8 flex justify-center gap-6 sm:mt-0 lg:justify-end">
                         <li>
                             <Link
-                                to="#"
+                                to="https://www.linkedin.com/in/saran-zafar-7b9a581a8"
                                 className="text-gray-700 transition hover:opacity-75"
                                 target="_blank"
                             >
-                                <span className="sr-only">Facebook</span>
-                                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
+                                <span className="[&>svg]:h-5 [&>svg]:w-5">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor"
+                                        viewBox="0 0 448 512">
+                                        <path
+                                            d="M100.3 448H7.4V148.9h92.9zM53.8 108.1C24.1 108.1 0 83.5 0 53.8a53.8 53.8 0 0 1 107.6 0c0 29.7-24.1 54.3-53.8 54.3zM447.9 448h-92.7V302.4c0-34.7-.7-79.2-48.3-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.8V148.9h89.1v40.8h1.3c12.4-23.5 42.7-48.3 87.9-48.3 94 0 111.3 61.9 111.3 142.3V448z" />
+                                    </svg>
+                                </span>
                             </Link>
                         </li>
                         <li>
                             <Link
-                                to="#"
+                                to="https://www.instagram.com/mr_saran05/"
                                 className="text-gray-700 transition hover:opacity-75"
                                 target="_blank"
                             >
@@ -56,7 +57,7 @@ function Footer() {
                         </li>
                         <li>
                             <Link
-                                to="#"
+                                to="https://github.com/saranzafar"
                                 className="text-gray-700 transition hover:opacity-75"
                                 target="_blank"
                             >
@@ -72,7 +73,7 @@ function Footer() {
                         </li>
                         <li>
                             <Link
-                                to="#"
+                                to="https://saranzafar.github.io/"
                                 className="text-gray-700 transition hover:opacity-75"
                                 target="_blank"
                             >
